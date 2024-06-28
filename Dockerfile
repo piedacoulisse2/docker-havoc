@@ -1,4 +1,5 @@
 FROM debian:11
+
 RUN apt-get update -yq \
 && apt-get install curl gnupg wget git -yq
 
@@ -23,4 +24,4 @@ RUN cd ..
 
 RUN make ts-build
 
-RUN ./havoc server --profile ./profiles/havoc.yaotl -v --debug
+CMD ["./havoc", "server", "--profile", "./profiles/havoc.yaotl", "-v", "--debug"]
