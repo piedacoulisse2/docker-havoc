@@ -3,4 +3,4 @@ services:
   web:
     build: .
     ports:
-      -"443:8443"
+      - "443:8443"
