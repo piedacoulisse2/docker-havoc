@@ -19,7 +19,7 @@ spec:
         image: your-image:tag # Replace with your image name and tag
         ports:
         - containerPort: 8443
-        - containerPort: 8080
+        - containerPort: 40056
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +34,7 @@ spec:
     targetPort: 8443
     nodePort: 31443 # Optional: Specify the NodePort manually
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 40056
+    targetPort: 40056
     nodePort: 32080 # Optional: Specify the NodePort manually
   type: NodePort
