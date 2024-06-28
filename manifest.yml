@@ -1,33 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-deployment
-  labels:
-    app: web
+  namespace: malware
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: web
-  template:
-    metadata:
-      labels:
-        app: web
-    spec:
-      containers:
-      - name: web-container
-        image: your-image:tag # Replace with your image name and tag
-        ports:
-        - containerPort: 8443
-        - containerPort: 40056
+  containers:
+  - name: HavocC2
+    image: piedacoulisse10/havoc:latest # Replace with your image name and tag
+    ports:
+    - containerPort: 8443
+    - containerPort: 40056
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-service
+  namespace: malware
 spec:
-  selector:
-    app: web
   ports:
   - protocol: TCP
     port: 443
