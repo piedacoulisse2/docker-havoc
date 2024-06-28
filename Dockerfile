@@ -1,27 +1,31 @@
-FROM debian:11
+FROM ubuntu
+
+WORKDIR /teamserver
 
 RUN apt-get update -yq \
 && apt-get install curl gnupg wget git -yq
 
-RUN echo 'deb http://ftp.de.debian.org/debian bookworm main' >> /etc/apt/sources.list
+#RUN echo 'deb http://ftp.de.debian.org/debian bookworm main' >> /etc/apt/sources.list
+RUN apt install software-properties-common -yq
+RUN add-apt-repository ppa:deadsnakes/ppa
+
 RUN apt-get update -yq
-RUN apt install python3-dev python3.10-dev libpython3.10 libpython3.10-dev python3.10 -yq
+RUN apt install python3.10 python3.10-dev -yq
 RUN apt install wget software-properties-common apt-transport-https -yq
-RUN wget https://golang.org/dl/go1.17.linux-amd64.tar.gz
-RUN tar -zxvf go1.17.linux-amd64.tar.gz -C /usr/local/
-RUN echo "export PATH=/usr/local/go/bin:$PATH" | tee /etc/profile.d/go.sh -q \
-&& source /etc/profile.d/go.sh -yq \
-&& echo "export PATH=/usr/local/go/bin:$PATH" | tee -a $HOME/.profile source -q \
-&& source $HOME/.profile -q
 
-RUN git clone https://github.com/HavocFramework/Havoc.git
-RUN cd Havoc
+#RUN wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz -O go.tar.gz
+#RUN tar -xzvf go.tar.gz -C /usr/local
+RUN apt install golang-go -yq
 
-RUN cd teamserver
-RUN go mod download golang.org/x/sys
-RUN go mod download github.com/ugorji/go
-RUN cd ..
 
-RUN make ts-build
+RUN cd ~ && git clone -b dev https://github.com/HavocFramework/Havoc.git
 
-CMD ["./havoc", "server", "--profile", "./profiles/havoc.yaotl", "-v", "--debug"]
+WORKDIR /teamserver/Havoc/teamserver
+RUN ls
+
+#RUN go mod download golang.org/x/sys \
+#&& go mod download github.com/ugorji/go 
+#WORKDIR /teamserver
+#RUN make ts-build
+
+#ENTRYPOINT ["/teamserver/havoc", "server" ,"--profile", "/teamserver/profiles/havoc.yaotl","-v","--debug"]
